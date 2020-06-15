@@ -69,7 +69,7 @@ function onEncode() {
         let secretRGB = secretImageCanvasContext.getImageData(x, y, 1, 1).data.slice(0,3);
 
         let mask = password === "" ? 0 : createMask(rng, pivot);
-        let outputRGB = baseRGB.map((v, i) => (v & (Math.pow(2, byte) - Math.pow(2, byte - pivot))) | ((secretRGB[i] >> pivot) ^ mask));
+        let outputRGB = baseRGB.map((v, i) => (v & (Math.pow(2, byte) - Math.pow(2, byte - pivot))) | (((secretRGB[i] >> pivot) ^ mask) & (Math.pow(2, byte - pivot) - 1)));
 
         context.fillStyle = "rgb(" + outputRGB[0] + "," + outputRGB[1] + "," + outputRGB[2] + ")";
         context.fillRect(x, y, 1, 1);
