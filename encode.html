@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <script src="js/encode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js" integrity="sha384-bFS5CG904xYIgxBcrDF4KFNXuM7KeSGsSvS/QTaDqMTEdbaaxjg2Y2TSU3Ygs7wG" crossorigin="anonymous"></script>
+
+    <title>Steg | Encode</title>
+  </head>
+  <body>
+    <nav>
+      <span>
+        <a class="title">Steganography<a>
+        <a href="./">About</a>
+        <a href="encode" class="selected">Encode</a>
+        <a href="decode">Decode</a>
+      </span>
+      <span class="align-right">
+        <a href="https://github.com/Michael-JB/js-steganography" class="right"><img src="images/gh-logo.svg"></a>
+      </span>
+    </nav>
+    <main>
+      <div class="content">
+        <h1>Encoder</h1>
+        <p>Encode one image inside another. For the details of how this works, and to learn the limitations of the security of this encoder, visit the <a href="index.html">about</a> page. This site is served statically, therefore the encoding all happens in your browser; images and passwords input here are not sent over a network. For the best results, ensure the dimensions of both images are the same.</p>
+        <hr/>
+        <label for="base-image-input" class="row-label">Base image:
+          <input type="file" id="base-image-input"/>
+        </label>
+        <div id="base-image-canvas-container"></div>
+        <label for="secret-image-input" class="row-label">Secret image:
+          <input type="file" id="secret-image-input"/>
+        </label>
+        <div id="secret-image-canvas-container"></div>
+        <label for="pivot" class="row-label">Base image bits:
+          <input type="range" id="pivot" min="1" max="7" step="1" value="4"/>
+          <label id="pivot-value" for="pivot">4</label>
+        </label>
+        <label for="password-field" class="row-label">Password (optional):
+          <input id="password-field" type="text"/>
+          <label for="password-field" class="disclaimer-label">Do not use a password more than once!</label>
+        </label>
+        <button id="encode-button" class="btn" type="button">Encode</button>
+      </div>
+      <div id="output-panel" class="content hidden">
+        <h2>Output</h2>
+        <div id="output-image-canvas-container"></div>
+        <button id="save-output-button" class="btn inline btn-small" type="button">Download</button>
+        <button id="copy-output-button" class="btn inline btn-small" type="button">Copy</button>
+      </div>
+    </main>
+  </body>
+</html>

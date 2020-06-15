@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>Steg</title>
+  </head>
+  <body>
+    <a id="top"></a>
+    <nav>
+      <span>
+        <a class="title">Steganography<a>
+        <a href="./" class="selected">About</a>
+        <a href="encode">Encode</a>
+        <a href="decode">Decode</a>
+      </span>
+      <span class="align-right">
+        <a href="https://github.com/Michael-JB/js-steganography" class="right"><img src="images/gh-logo.svg"></a>
+      </span>
+    </nav>
+    <main>
+      <div class="content">
+        <h1>Steganography</h1>
+        <p> Unlike cryptography, where the aim is to conceal the contents of a message, steganography is the practice of concealing the existence of a message. In the digital age, messages take the form of a bit string, and are typically hidden within files encoding images, audio or video. We specifically focus on the task of hiding one image inside another.</p>
+        <p class="final-p">This page is statically served with <a href="https://pages.github.com/">GitHub Pages</a>. The corresponding repository is located <a href="https://github.com/Michael-JB/js-steganography">here</a>.</p>
+      </div>
+      <div class="content">
+        <h1>How it works</h1>
+        <p>Information can be injected into image files in a number of ways. Some image file formats (such as PNG) store metadata; a simple approach is to hide information in these metadata headers. Alternatively, with JPEG image formats, information can be hidden in the quantisation coefficients during JPEG compression. The technique we use (and describe here) operates in the spatial domain, encoding information in the raw pixel colour values. For this reason, provided any compression is lossless, this technique is file format agnostic.</p>
+        <p>An image is a grid of coloured pixels. Each pixel is described by a red component, a green component, and a blue component, each taking a value between 0 and 255 and combining additively as light would. Lower values correspond to less of a colour, while higher values correspond to more of a colour. For example, the colour green is encoded by 0 red, 255 green and 0 blue, and cyan is encoded by 0 red, 255 green and 255 blue. A pixel can therefore be encoded in three bytes: one byte per colour. Importantly, the Least Significant Bits (LSBs) of each of these bytes do not have a large visual impact on the image. For example, if the last two bits of each byte were to be cleared, the resulting colour components would differ from the original by at most 3. It is in these LSBs that the payload (i.e., the image to hide) is concealed. Specifically, for each byte in the base (carrier) image, the 0 &lt <var>n</var> &lt 8 Most Significant Bits (MSBs) are kept, and the (8 - <var>n</var>) LSBs are replaced with the (8 - <var>n</var>) MSBs of the corresponding byte in the image to hide. The following diagram illustrates this encoding scheme for <var>n</var> = 5, where <var>A</var> shows the region allocated to the MSBs of the base image, and <var>B</var> shows the region allocated to the MSBs of the image to hide.</p>
+        <p class="centered"><img src="images/rgb.svg"/></p>
+        <p>The choice of <var>n</var> is therefore a tradeoff between the visual impact on the base image and the size of the payload.</p>
+        <p class="centered"><img src="images/cube.png"/> <img src="images/sea.png"/></p>
+        <p>By hiding the above coastal scene (<code>sea.png</code>) in the above image of a twisty puzzle (<code>cube.png</code>) with different values of <var>n</var>, the table below demonstrates this tradeoff.
+          <table class="centered-table">
+            <thead>
+              <tr>
+                <th class="n"><var>n</var></th>
+                <th><var>Encoded image</var></th>
+                <th><var>Decoded image</var></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><img src="images/encoded_1.png"/></td>
+                <td><img src="images/decoded_1.png"/></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><img src="images/encoded_2.png"/></td>
+                <td><img src="images/decoded_2.png"/></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><img src="images/encoded_3.png"/></td>
+                <td><img src="images/decoded_3.png"/></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><img src="images/encoded_4.png"/></td>
+                <td><img src="images/decoded_4.png"/></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><img src="images/encoded_5.png"/></td>
+                <td><img src="images/decoded_5.png"/></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><img src="images/encoded_6.png"/></td>
+                <td><img src="images/decoded_6.png"/></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><img src="images/encoded_7.png"/></td>
+                <td><img src="images/decoded_7.png"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+        <h2>Securing the hidden image</h2>
+        <p class="final-p">Though the payload is successfully hidden using the above technique, it is not encrypted. Therefore, if an adversary decodes every image, the payload will be retrieved in full. There are many methods of combatting this; this site implements a simple one which preserves the payload size. A password is used to seed a pseudorandom number generator (PRNG) (this site uses <a href="https://github.com/davidbau/seedrandom">a script by David Bau</a>). This PRNG is used to generate a bit key for each bit to hide. Then, before replacing the LSBs of the base image, the MSBs of the image to hide are first XORed (⊕) with the corresponding pseudorandom bit key. This is effectively a version of the One Time Pad (OTP) encryption scheme, and hence has the following problems:
+        <ol>
+          <li>The security of the scheme relies on true randomness, which is not provided by the PRNG. Any predictability in the PRNG may leak information about the payload.</li>
+          <li>The security of this scheme can be undermined by an insecure password exchange.</li>
+          <li>This scheme provides no authentication, and is therefore susceptible to alteration.</li>
+          <li>Passwords can only be used once; password reuse compromises the security of this scheme.</li>
+        </ol>
+        To demonstrate this last point in particular, consider two images, <var>i<sub>1</sub></var> and <var>i<sub>2</sub></var>. Suppose we hide both of these images with the same password. When seeded with this password, the PRNG will generate the bit string <var>k</var>. Therefore, the concatenated LSBs of the encoded image hiding <var>i<sub>1</sub></var> equal <var>c<sub>1</sub></var> = <var>i<sub>1</sub></var> ⊕ <var>k</var>, and the concatenated LSBs of the encoded image hiding <var>i<sub>2</sub></var> equal <var>c<sub>2</sub></var> = <var>i<sub>2</sub></var> ⊕ <var>k</var>. On their own, <var>c<sub>1</sub></var> and <var>c<sub>2</sub></var> are reasonably secure, provided <var>k</var> is not known. However, if both <var>c<sub>1</sub></var> and <var>c<sub>2</sub></var> are known, the security is heavily undermined: <var>c<sub>1</sub></var> ⊕ <var>c<sub>2</sub></var> = ( <var>i<sub>1</sub></var> ⊕ <var>k</var> ) ⊕ ( <var>i<sub>2</sub></var> ⊕ <var>k</var> ) = <var>i<sub>1</sub></var> ⊕ <var>i<sub>2</sub></var>, as (1) XOR is an associative operator; (2) the XOR of a value with itself is zero; and (3) the XOR of any value with zero is zero. To illustrate this, we introduce a new third image, <code>coffee.png</code>:
+        <p class="centered"><img src="images/coffee.png"/></p>
+        The following two images, <code>c1.png</code> and <code>c2.png</code>, encode (within <code>sea.png</code>) <code>cube.png</code> and <code>coffee.png</code> respectively, both using the password 'hello'.
+        <p class="centered"><img src="images/c1.png"/> <img src="images/c2.png"/></p>
+        When decoded without a password, the result is seemingly random noise:
+        <p class="centered"><img src="images/c1-decoded.png"/> <img src="images/c2-decoded.png"/></p>
+        However, as shown below, the XOR of these decoded images clearly leaks information. Indeed, as expected, the MSBs of this image match the MSBs of the XOR of <code>cube.png</code> and <code>coffee.png</code>.
+        <p class="centered"><img src="images/xor.png"/></p></p>
+        <a href="#top">Back to top</a>
+      </div>
+    </main>
+  </body>
+</html>

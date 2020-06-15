@@ -1,0 +1,153 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(240, 240, 240);
+}
+
+.hidden {
+  display: none;
+}
+
+h1, h2 {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+
+nav {
+  margin: 0 0 1em 0;
+  padding: 1em;
+  background-color: rgb(50, 50, 50);
+  display: flex;
+  align-items: baseline;
+}
+
+nav a {
+  color: lightgrey;
+  text-decoration: none;
+  padding: 0 .25em;
+}
+
+nav a:hover {
+  color: white;
+}
+
+nav .selected {
+  color: white;
+}
+
+nav .title {
+  color: white;
+  font-size: large;
+  font-weight: 500;
+}
+
+nav .align-right {
+  flex-grow: 1;
+  text-align: right;
+}
+
+nav img {
+  height: 1.5em;
+  width: auto;
+  fill: white;
+  vertical-align: middle;
+}
+
+main {
+  margin: 0 1em;
+}
+
+.content {
+  padding: 1em;
+  min-width: 10em;
+  max-width: 50em;
+  overflow-x: auto;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid lightgrey;
+}
+
+input {
+  margin-left: .4em;
+}
+
+.btn.btn-small {
+  padding: .25em .4em;
+  margin: .25 .25em 0 0;
+  font-size: small;
+}
+
+.btn {
+  padding: .5em .75em;
+  margin: .75em .5em 0 0;
+  font-size: medium;
+  color: white;
+  background-color:rgb(102, 126, 138);
+  border: 1px solid rgb(92, 114, 125);
+  border-radius: 4px;
+  transition: all ease 0.3s;
+  display: block;
+}
+
+.btn:hover {
+	background-color:#5C727D;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #7F9CAA;
+  background-color: #5C727D;
+}
+
+.btn:active {
+	background-color: #4A5B63;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}
+
+.btn.inline {
+  display: inline-block;
+}
+
+.final-p {
+  margin-bottom: 0;
+}
+
+.row-label {
+  margin-bottom: .5em;
+  display: block;
+}
+
+.centered {
+  text-align: center;
+}
+
+.centered-table {
+  margin: 0px auto;
+}
+
+th.n {
+  width: 10%;
+}
+
+td {
+  text-align: center;
+}
+
+label.disclaimer-label {
+  color: rgb(50, 50, 50);
+  display: block;
+  font-size: small;
+  margin-top: .25em;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <script src="js/decode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js" integrity="sha384-bFS5CG904xYIgxBcrDF4KFNXuM7KeSGsSvS/QTaDqMTEdbaaxjg2Y2TSU3Ygs7wG" crossorigin="anonymous"></script>
+
+    <title>Steg | Decode</title>
+  </head>
+  <body>
+    <nav>
+      <span>
+        <a class="title">Steganography<a>
+        <a href="./">About</a>
+        <a href="encode">Encode</a>
+        <a href="decode" class="selected">Decode</a>
+      </span>
+      <span class="align-right">
+        <a href="https://github.com/Michael-JB/js-steganography" class="right"><img src="images/gh-logo.svg"></a>
+      </span>
+    </nav>
+    <main>
+      <div class="content">
+        <h1>Decoder</h1>
+        <p>This decoder will produce for a given input (1) the original image with the hidden bits cleared; and (2) the hidden image. This site is served statically, therefore the decoding all happens in your browser; images and passwords input here are not sent over a network.</p>
+        <hr/>
+        <label for="decode-image-input" class="row-label">Image to decode:
+          <input type="file" id="decode-image-input">
+        </label>
+        <div id="decode-image-canvas-container"></div>
+        <label for="pivot" class="row-label">Base image bits:
+          <input type="range" id="pivot" min="1" max="7" step="1" value="4">
+          <label id="pivot-value" for="pivot">4</label>
+        </label>
+        <label for="password-field" class="row-label">Password (leave blank if none):
+          <input id="password-field" type="text"/>
+        </label>
+        <button id="decode-button" class="btn" type="button">Decode</button>
+      </div>
+      <div id="original-output-panel" class="content hidden">
+        <h2>Original image</h2>
+        <div id="original-image-canvas-container"></div>
+        <button id="save-original-output-button" class="btn inline btn-small" type="button">Download</button>
+        <button id="copy-original-output-button" class="btn inline btn-small" type="button">Copy</button>
+      </div>
+      <div id="hidden-output-panel" class="content hidden">
+        <h2>Hidden image</h2>
+        <div id="hidden-image-canvas-container"></div>
+        <button id="save-hidden-output-button" class="btn inline btn-small" type="button">Download</button>
+        <button id="copy-hidden-output-button" class="btn inline btn-small" type="button">Copy</button>
+      </div>
+    </main>
+  </body>
+</html>
