@@ -33,9 +33,9 @@ function seededBoolean(rng) {
   return rng() > 0.5;
 }
 
-function createMask(rng, pivot) {
+function createMask(rng, size) {
   let mask = 0;
-  for (let i = 0; i < pivot; i++) {
+  for (let i = 0; i < size; i++) {
     mask = mask << 1;
     if (seededBoolean(rng)) {
       mask = mask | 1;
@@ -74,7 +74,7 @@ function onDecode() {
       for (let x = 0; x < decodeImageCanvas.width; x++) {
         let decodeRGB = decodeImageCanvasContext.getImageData(x, y, 1, 1).data.slice(0,3);
 
-        let mask = password === "" ? 0 : createMask(rng, pivot);
+        let mask = password === "" ? 0 : createMask(rng, byte - pivot);
 
         let originalRGB = decodeRGB.map(v => v & (Math.pow(2, byte) - Math.pow(2, byte - pivot)));
         let hiddenRGB = decodeRGB.map(v => ((mask ^ v) & (Math.pow(2, byte - pivot) - 1)) << pivot);
